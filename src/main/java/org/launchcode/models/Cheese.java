@@ -18,7 +18,7 @@ public class Cheese {
     private int id;
 
     @NotNull
-    @Size(min=3, max=15)
+    @Size(min=3, max=15, message = "Name must not be empty or be more than 15 characters long")
     private String name;
 
     @NotNull
