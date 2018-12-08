@@ -84,13 +84,16 @@ public class MenuController {
                           @ModelAttribute @Valid AddMenuItemForm form,
                           Errors errors) {
 
-        if (errors.hasErrors()) {
-            model.addAttribute("form", form);
-            return "menu/add-item";
-        }
-
         Cheese theCheese = cheeseDao.findOne(form.getCheeseId());
         Menu theMenu = menuDao.findOne(form.getMenuId());
+
+        if (errors.hasErrors()) {
+            if (menuDao.exists(theCheese.getId())) {
+                model.addAttribute("form", form);
+                return "menu/add-item";
+            }
+        }
+
         theMenu.addItem(theCheese);
         menuDao.save(theMenu);
 

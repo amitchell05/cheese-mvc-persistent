@@ -8,7 +8,6 @@
 
         <nav th:replace="fragments :: navigation"></nav>
 
-        <!--TODO 1: Check list to see if it displays added cheeses properly-->
         <ul>
             <li th:each="cheese : ${menu.cheeses}" th:text="${cheese.name}"></li>
         </ul>

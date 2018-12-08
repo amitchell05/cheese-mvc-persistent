@@ -23,15 +23,20 @@ public class Cheese {
     @Size(min=1, message = "Description must not be empty")
     private String description;
 
+    @NotNull
+    @Size(min=1, max=5, message = "Rating must not be empty or be more than 5 characters long")
+    private String rating;
+
     @ManyToOne
     private Category category;
 
     @ManyToMany(mappedBy = "cheeses")
     private List<Menu> menus;
 
-    public Cheese(String name, String description) {
+    public Cheese(String name, String description, String rating) {
         this.name = name;
         this.description = description;
+        this.rating = rating;
     }
 
     public Cheese() { }
@@ -54,6 +59,14 @@ public class Cheese {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     public Category getCategory() {
