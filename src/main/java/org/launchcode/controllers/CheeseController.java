@@ -2,8 +2,10 @@ package org.launchcode.controllers;
 
 import org.launchcode.models.Category;
 import org.launchcode.models.Cheese;
+import org.launchcode.models.User;
 import org.launchcode.models.data.CategoryDao;
 import org.launchcode.models.data.CheeseDao;
+import org.launchcode.models.data.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,36 +28,57 @@ public class CheeseController {
     @Autowired
     private CategoryDao categoryDao;
 
+    @Autowired
+    private UserDao userDao;
+
     // Request path: /cheese
     @RequestMapping(value = "")
-    public String index(Model model) {
+    public String index(Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
 
-        model.addAttribute("cheeses", cheeseDao.findAll());
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+
+        User user = userDao.findByUsername(username).get(0);
+        model.addAttribute("cheeses", user.getCheeses());
         model.addAttribute("title", "My Cheeses");
 
         return "cheese/index";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
-    public String displayAddCheeseForm(Model model) {
+    public String displayAddCheeseForm(Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
+
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+
+        User user = userDao.findByUsername(username).get(0);
         model.addAttribute("title", "Add Cheese");
         model.addAttribute(new Cheese());
-        model.addAttribute("categories", categoryDao.findAll());
+        model.addAttribute("categories", user.getCategories());
         return "cheese/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddCheeseForm(@ModelAttribute  @Valid Cheese newCheese,
                                        Errors errors,
+                                       Model model,
                                        @RequestParam int categoryId,
-                                       Model model) {
+                                       @CookieValue(value = "user", defaultValue = "none") String username) {
 
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+
+        User user = userDao.findByUsername(username).get(0);
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Cheese");
             model.addAttribute("categories", categoryDao.findAll());
             return "cheese/add";
         }
 
+        newCheese.setUser(user);
         Category cat = categoryDao.findOne(categoryId);
         newCheese.setCategory(cat);
         cheeseDao.save(newCheese);
@@ -63,21 +86,32 @@ public class CheeseController {
     }
 
     @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.GET)
-    public String displayEditForm(Model model, @PathVariable int cheeseId) {
+    public String displayEditForm(Model model, @PathVariable int cheeseId, @CookieValue(value = "user", defaultValue = "none") String username) {
+
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+
+        User user = userDao.findByUsername(username).get(0);
         Cheese currentCheese = cheeseDao.findOne(cheeseId);
         model.addAttribute("cheese", currentCheese);
-        model.addAttribute("categories", categoryDao.findAll());
-        model.addAttribute("title", "Edit Cheese " + currentCheese.getName() + " (" + cheeseId + ")");
+        model.addAttribute("categories", user.getCategories());
+        model.addAttribute("title", "Edit Cheese " + cheeseDao.findOne(cheeseId).getName() + " (" + cheeseId + ")");
         return "cheese/edit";
 
     }
 
     @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.POST)
     public String processEditForm(@PathVariable int cheeseId, String name, String description, int categoryId, String rating, @ModelAttribute @Valid Cheese currentCheese,
-                                  Errors errors, Model model) {
+                                  Errors errors, Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
 
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+
+        User user = userDao.findByUsername(username).get(0);
         if (errors.hasErrors()) {
-            model.addAttribute("categories", categoryDao.findAll());
+            model.addAttribute("categories", user.getCategories());
             model.addAttribute("title", "Edit Cheese " + cheeseDao.findOne(cheeseId).getName() + " (" + cheeseId + ")");
             return "cheese/edit";
         }
@@ -98,8 +132,14 @@ public class CheeseController {
     }
 
     @RequestMapping(value = "remove", method = RequestMethod.GET)
-    public String displayRemoveCheeseForm(Model model) {
-        model.addAttribute("cheeses", cheeseDao.findAll());
+    public String displayRemoveCheeseForm(Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
+
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+
+        User user = userDao.findByUsername(username).get(0);
+        model.addAttribute("cheeses", user.getCheeses());
         model.addAttribute("title", "Remove Cheese");
         return "cheese/remove";
     }

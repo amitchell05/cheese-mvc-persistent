@@ -2,7 +2,9 @@ package org.launchcode.models.forms;
 
 import org.launchcode.models.Cheese;
 import org.launchcode.models.Menu;
+import org.launchcode.models.User;
 
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 public class AddMenuItemForm {
@@ -16,6 +18,9 @@ public class AddMenuItemForm {
     private Menu menu;
 
     private Iterable<Cheese> cheeses;
+
+    @ManyToOne
+    private User user;
 
     public AddMenuItemForm() {
 
@@ -50,4 +55,11 @@ public class AddMenuItemForm {
         this.cheeseId = cheeseId;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

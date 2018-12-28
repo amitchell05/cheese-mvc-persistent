@@ -21,6 +21,9 @@ public class Category {
     @JoinColumn(name = "category_id")
     private List<Cheese> cheeses = new ArrayList<>();
 
+    @ManyToOne
+    private User user;
+
     public Category() {
 
     }
@@ -47,5 +50,13 @@ public class Category {
 
     public void setCheeses(List<Cheese> cheeses) {
         this.cheeses = cheeses;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,9 +1,6 @@
 package org.launchcode.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -22,6 +19,9 @@ public class Menu {
 
     @ManyToMany
     private List<Cheese> cheeses;
+
+    @ManyToOne
+    private User user;
 
     public Menu() {
 
@@ -51,4 +51,11 @@ public class Menu {
         return cheeses;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

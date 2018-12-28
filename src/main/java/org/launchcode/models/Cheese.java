@@ -30,6 +30,9 @@ public class Cheese {
     @ManyToOne
     private Category category;
 
+    @ManyToOne
+    private User user;
+
     @ManyToMany(mappedBy = "cheeses")
     private List<Menu> menus;
 
@@ -79,5 +82,13 @@ public class Cheese {
 
     public List<Menu> getMenus() {
         return menus;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
