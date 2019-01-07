@@ -96,7 +96,7 @@ public class CheeseController {
         Cheese currentCheese = cheeseDao.findOne(cheeseId);
         model.addAttribute("cheese", currentCheese);
         model.addAttribute("categories", user.getCategories());
-        model.addAttribute("title", "Edit Cheese " + cheeseDao.findOne(cheeseId).getName() + " (" + cheeseId + ")");
+        model.addAttribute("title", "Edit Cheese " + currentCheese.getName() + " (" + cheeseId + ")");
         return "cheese/edit";
 
     }
