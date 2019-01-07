@@ -102,7 +102,7 @@ public class CheeseController {
     }
 
     @RequestMapping(value = "edit/{cheeseId}", method = RequestMethod.POST)
-    public String processEditForm(@PathVariable int cheeseId, String name, String description, int categoryId, int rating, @ModelAttribute @Valid Cheese currentCheese,
+    public String processEditForm(@PathVariable int cheeseId, String name, String description, int categoryId, Integer rating, @ModelAttribute @Valid Cheese currentCheese,
                                   Errors errors, Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
 
         if (username.equals("none")) {

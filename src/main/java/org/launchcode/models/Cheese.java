@@ -1,7 +1,8 @@
 package org.launchcode.models;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -25,8 +26,8 @@ public class Cheese {
     private String description;
 
     @NotNull
-    @Max(5)
-    private int rating;
+    @Range(min=1, max=5)
+    private Integer rating;
 
     @ManyToOne
     private Category category;
@@ -37,7 +38,7 @@ public class Cheese {
     @ManyToMany(mappedBy = "cheeses")
     private List<Menu> menus;
 
-    public Cheese(String name, String description, int rating) {
+    public Cheese(String name, String description, Integer rating) {
         this.name = name;
         this.description = description;
         this.rating = rating;
@@ -65,11 +66,11 @@ public class Cheese {
         this.description = description;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
