@@ -23,8 +23,9 @@
         <span th:errors="*{password}" class="error"></span>
     </div>
     <div class="form-group">
-        <label for="verify-field">Verify</label>
-        <input class="form-control" id="verify-field" type="password" name="verify" />
+        <label th:for="verifyPassword">Verify Password</label>
+        <input th:field="*{verifyPassword}" class="form-control" type="password" />
+        <span th:errors="*{verifyPassword}" class="error"></span>
     </div>
 
     <input type="submit" value="Add User" />
