@@ -41,6 +41,7 @@ public class UserController {
             return "user/index";
         } else {
             model.addAttribute("user", user);
+            user.setPassword("");
             model.addAttribute("title", "User Signup");
 
             if (!sameName.isEmpty()) {
